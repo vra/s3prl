@@ -248,9 +248,7 @@ class ECAPA_TDNN(nn.Module):
             if config_path is None:
                 torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
                 print(feat_type)
-                self.feature_extract = torch.hub.load(
-                    "/home/ws/s3prl_s3prl_main", feat_type, source="local"
-                )
+                self.feature_extract = torch.hub.load("s3prl/s3prl", feat_type)
             if len(self.feature_extract.model.encoder.layers) == 24 and hasattr(
                 self.feature_extract.model.encoder.layers[23].self_attn,
                 "fp32_attention",
