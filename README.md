@@ -9,6 +9,54 @@
     <a href="https://github.com/s3prl/s3prl/issues"><img alt="Bitbucket open issues" src="https://img.shields.io/github/issues/s3prl/s3prl"></a>
 </p>
 
+## Update in this fork
+This fork add the onnx and [MNN](https://github.com/alibaba/MNN) version of wavlm_large model for audio embedding extraction. With onnx or mnn model, you will not need to run any model definition and no more torch.hub.load issue. All you need is a `.onnx` or `.mnn` file and less than 60 lines of code.
+
+### Changes:
++ Update some code in `s3prl/upstream/wavlm/expert.py` to support onnx exporting, see [this commit](https://github.com/vra/s3prl/commit/bb2e635c434bbf8c5a385b990e2ab6b636134d5f).
++ Add infer code of pytorch model for wavlm large to demostrate the embedding extract pipeline
++ Add infer code of onnx model
++ Add infer code of mnn model
+
+### Model Download
+- onnx: <https://huggingface.co/yunfengwang/wavlm-large-onnx>
+- mnn: <https://huggingface.co/yunfengwang/wavlm-large-mnn>
+
+### Export Pytorch model to onnx
+```bash
+python demo.py -t export -m /path/to/wavlm_large_finetune.pth -o wavlm_large.onnx
+```
+
+## Convert onnx to mnn
+You need to install MNN First:
+```bash
+pip install MNN
+```
+then run commands:
+```bash
+# convert using fp16 
+mnnconvert -f ONNX --modelFile wavlm_large.onnx --MNNModel wavlm_large_fp16.mnn --fp16
+
+# convert using quant_bit 8
+mnnconvert -f ONNX --modelFile wavlm_large.onnx --MNNModel wavlm_large_int8.mnn.mnn --weightQuantBits 8 --weightQuantAsymmetric
+```
+
+### Pytorch inference
+You need to download wavlm_large_finetune.pth from [here](https://drive.google.com/file/d/1-aE1NfzpRCLxA4GUxX9ITI3F9LlbtEGP/view?usp=sharing)
+```bash
+python demo.py -t infer -m /path/to/wavlm_large_finetune.pth -i /path/to/audio
+```
+
+### ONNX model inferce
+```bash
+python infer_onnx.py -m wavlm_large.onnx -i /path/to/audio
+```
+
+### MNN model inferce
+```bash
+python infer_mnn.py -m wavlm_large_fp16.mnn -i /path/to/audio
+```
+
 ## Contact
 
 We prefer to have discussions directly on Github issue page, so that all the information is transparent to all the contributors and is auto-archived on the Github.
