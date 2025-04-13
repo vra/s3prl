@@ -57,6 +57,22 @@ python infer_onnx.py -m wavlm_large.onnx -i /path/to/audio
 python infer_mnn.py -m wavlm_large_fp16.mnn -i /path/to/audio
 ```
 
+### Verification use case
+You can use pytorch/onnx/mnn model to do speaker verification task.
+
+use Pytorch:
+```bash
+python verification.py -m /path/to/wavlm_large_finetune.pth -t pytorch --input_audio_path1 /path/to/audio1 --input_audio_path2 /path/to/audio2
+```
+use ONNX:
+```bash
+python verification.py -m /path/to/wavlm_large.onnx -t onnx --input_audio_path1 /path/to/audio1 --input_audio_path2 /path/to/audio2
+```
+use MNN:
+```bash
+python verification.py -m /path/to/wavlm_large_fp16.mnn -t mnn --input_audio_path1 /path/to/audio1 --input_audio_path2 /path/to/audio2
+```
+
 ## Contact
 
 We prefer to have discussions directly on Github issue page, so that all the information is transparent to all the contributors and is auto-archived on the Github.
