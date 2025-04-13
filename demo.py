@@ -247,7 +247,6 @@ class ECAPA_TDNN(nn.Module):
         else:
             if config_path is None:
                 torch.hub._validate_not_a_forked_repo = lambda a, b, c: True
-                print(feat_type)
                 self.feature_extract = torch.hub.load("s3prl/s3prl", feat_type)
             if len(self.feature_extract.model.encoder.layers) == 24 and hasattr(
                 self.feature_extract.model.encoder.layers[23].self_attn,
