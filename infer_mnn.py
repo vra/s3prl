@@ -9,7 +9,7 @@ class MNNModel:
         input_names = ["audio"]
         output_names = ["embed"]
 
-        self.chinese_bert = MNN.nn.load_module_from_file(
+        self.net = MNN.nn.load_module_from_file(
             mnn_model_path,
             input_names,
             output_names,
@@ -20,9 +20,9 @@ class MNNModel:
 
         mnn_audio.write(audio)
 
-        output = self.chinese_bert.forward([mnn_audio])
+        output = self.net.forward([mnn_audio])
         output = MNN.expr.convert(output[0], MNN.expr.NCHW)
-        embed = output.read()
+        embed = output.read().copy()
         return embed
 
 
